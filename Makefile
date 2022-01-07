@@ -34,3 +34,10 @@ acl: ## build ACL configs with AVD playbook
 	    -e AVD_GIT_USER="$(shell git config --get user.name)" \
 		-e AVD_GIT_EMAIL="$(shell git config --get user.email)" \
 	    -v /etc/hosts:/etc/hosts $(DOCKER_NAME):latest ansible-playbook /home/avd/projects/playbooks/build-configs.yml
+
+.PHONY: acl-deploy
+acl-deploy: ## build ACL configs with AVD playbook and deploy via CVP
+	docker run --rm -it -v $(CURRENT_DIR)/:/home/avd/projects \
+	    -e AVD_GIT_USER="$(shell git config --get user.name)" \
+		-e AVD_GIT_EMAIL="$(shell git config --get user.email)" \
+	    -v /etc/hosts:/etc/hosts $(DOCKER_NAME):latest ansible-playbook /home/avd/projects/playbooks/build-and-deploy.yml

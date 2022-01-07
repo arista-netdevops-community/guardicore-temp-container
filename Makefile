@@ -1,5 +1,5 @@
 CURRENT_DIR = $(shell pwd)
-DOCKER_NAME ?= avdteam/guardicore-temp-container
+DOCKER_NAME ?= avdteam/guardicore-temp
 BRANCH ?= $(shell git symbolic-ref --short HEAD)
 
 .PHONY: help

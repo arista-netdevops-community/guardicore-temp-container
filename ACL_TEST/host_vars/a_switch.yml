@@ -1,0 +1,31 @@
+# a simple test acl
+ip_access_lists_max_acle: 10000
+
+ip_access_lists:
+  - name: ACL_SIMPLE_TEST
+    entries:
+      - remark: test acl without sequence numbers
+      - action: deny
+        protocol: udp
+        source: any
+        destination: any
+        log: true
+      - action: permit
+        protocol: icmp
+        source: any
+        destination: any
+        icmp_type: 3
+        icmp_code: 4
+        ttl: 40
+      - action: permit
+        protocol: icmp
+        source: any
+        destination: any
+        icmp_type: unreachable
+        ttl: 3
+        ttl_match: gt
+
+ethernet_interfaces:
+  Ethernet1:
+    access_group_in: ACL_SIMPLE_TEST
+    access_group_out: ACL_SIMPLE_TEST

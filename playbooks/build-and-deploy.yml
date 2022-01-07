@@ -1,0 +1,42 @@
+---
+#
+# This playbook will create configs and deploy them via CVP
+#
+- name: Build ACL configuration
+  hosts: ACL_TEST
+  connection: local
+  gather_facts: false
+  collections:
+    - arista.avd
+    - arista.cvp
+  vars:
+    fabric_dir_name: "ACL_TEST"
+    execute_tasks: false
+  tasks:
+    - name: 'reset local folders for output'
+      tags: [build, generate]
+      import_role:
+        name: arista.avd.build_output_folders
+
+    - name: generate device intended config and documentation
+      tags: [build, generate]
+      import_role:
+        name: eos_cli_config_gen
+
+- name: Configuration deployment with CVP
+  hosts: CV_SERVERS
+  connection: local
+  gather_facts: false
+  collections:
+    - arista.cvp
+  tasks:
+    - name: provision CVP with AVD configuration
+      tags: [deploy]
+      import_role:
+        name: arista.avd.eos_config_deploy_cvp
+      vars:
+        container_root: "ACL_TEST"
+        configlets_prefix: ACL
+        state: present
+        cv_collection: v3
+        execute_tasks: true

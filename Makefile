@@ -16,7 +16,7 @@ build: ## Build docker image
 
 .PHONY: run
 run: ## run docker image
-	if [ $(BRANCH) = 'master' ]; then \
+	if [ $(BRANCH) = 'main' ]; then \
 		docker run --rm -it -v $(CURRENT_DIR)/:/projects \
 			-e AVD_GIT_USER="$(shell git config --get user.name)" \
 			-e AVD_GIT_EMAIL="$(shell git config --get user.email)" \

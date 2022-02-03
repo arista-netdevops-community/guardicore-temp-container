@@ -27,5 +27,6 @@ ip_access_lists:
 
 ethernet_interfaces:
   Ethernet1:
+    type: routed
     access_group_in: ACL_SIMPLE_TEST
     access_group_out: ACL_SIMPLE_TEST

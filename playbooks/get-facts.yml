@@ -1,0 +1,21 @@
+---
+- name: get facts from CloudVision
+  hosts: CV_SERVERS
+  connection: local
+  gather_facts: false
+  collections:
+    - arista.cvp
+  tasks:
+    - name: get facts from CloudVision
+      arista.cvp.cv_facts_v3:
+        # facts:
+        # - devices
+        # - containers
+      register: cv_facts
+    - debug:
+        var: cv_facts
+    - name: save facts
+      copy:
+        content: "{{ cv_facts | to_nice_json }}"
+        dest: cv_facts.json
+      delegate_to: localhost

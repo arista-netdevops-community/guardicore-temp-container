@@ -1,5 +1,6 @@
 CURRENT_DIR = $(shell pwd)
 DOCKER_NAME ?= avdteam/guardicore-temp
+DOCKER_TAG ?= guardicore_avd3.3.1
 BRANCH ?= $(shell git symbolic-ref --short HEAD)
 
 .PHONY: help
@@ -33,11 +34,18 @@ acl: ## build ACL configs with AVD playbook
 	docker run --rm -it -v $(CURRENT_DIR)/:/home/avd/projects \
 	    -e AVD_GIT_USER="$(shell git config --get user.name)" \
 		-e AVD_GIT_EMAIL="$(shell git config --get user.email)" \
-	    -v /etc/hosts:/etc/hosts $(DOCKER_NAME):latest ansible-playbook /home/avd/projects/playbooks/build-configs.yml
+	    -v /etc/hosts:/etc/hosts $(DOCKER_NAME):$(DOCKER_TAG) ansible-playbook /home/avd/projects/playbooks/build-configs.yml
 
 .PHONY: acl-deploy
 acl-deploy: ## build ACL configs with AVD playbook and deploy via CVP
 	docker run --rm -it -v $(CURRENT_DIR)/:/home/avd/projects \
 	    -e AVD_GIT_USER="$(shell git config --get user.name)" \
 		-e AVD_GIT_EMAIL="$(shell git config --get user.email)" \
-	    -v /etc/hosts:/etc/hosts $(DOCKER_NAME):latest ansible-playbook /home/avd/projects/playbooks/build-and-deploy.yml
+	    -v /etc/hosts:/etc/hosts $(DOCKER_NAME):$(DOCKER_TAG) ansible-playbook /home/avd/projects/playbooks/build-and-deploy.yml
+
+.PHONY: get_facts
+get_facts: ## get facts from CloudVision
+	docker run --rm -it -v $(CURRENT_DIR)/:/home/avd/projects \
+	    -e AVD_GIT_USER="$(shell git config --get user.name)" \
+		-e AVD_GIT_EMAIL="$(shell git config --get user.email)" \
+	    -v /etc/hosts:/etc/hosts $(DOCKER_NAME):$(DOCKER_TAG) ansible-playbook /home/avd/projects/playbooks/get-facts.yml

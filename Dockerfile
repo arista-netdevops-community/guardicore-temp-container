@@ -65,20 +65,20 @@ COPY ./gitconfig /home/avd/gitconfig-avd-base-template
 COPY ./avd-all-in-one-requirements.txt /home/avd/avd-all-in-one-requirements.txt
 
 # change this for every release
-ENV _AVD_VERSION="ip_access_lists_1411"
-ENV _CVP_VERSION="v3.2.0"
+ENV _AVD_VERSION="v3.3.1"
+ENV _CVP_VERSION="devel"
 
 # labels to be changed for every release
 LABEL maintainer="Arista Ansible Team <ansible@arista.com>"
-LABEL com.example.version="avd3.2.1_cvp3.2.0_debian"
+LABEL com.example.version="avd3.3.1_cvp3.2.0_debian"
 LABEL vendor1="Arista"
-LABEL com.example.release-date="2021-12-22"
+LABEL com.example.release-date="2021-02-24"
 LABEL com.example.version.is-production="False"
 
 # clone AVD and CVP collections
 RUN _CURL=$(which curl) \
     && _GIT=$(which git) \
-    && _REPO_AVD="https://github.com/ankudinov-arista-forks/ansible-avd" \
+    && _REPO_AVD="https://github.com/aristanetworks/ansible-avd.git" \
     && _REPO_CVP="https://github.com/aristanetworks/ansible-cvp.git" \
     && ${_GIT} clone --depth 1 --branch ${_AVD_VERSION} --single-branch ${_REPO_AVD} /home/avd/ansible-avd \
     && ${_GIT} clone --depth 1 --branch ${_CVP_VERSION} --single-branch ${_REPO_CVP} /home/avd/ansible-cvp \

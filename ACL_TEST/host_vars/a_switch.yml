@@ -1,5 +1,5 @@
 # a simple test acl
-ip_access_lists_max_acle: 10000
+ip_access_lists_max_entries: 10000
 
 ip_access_lists:
   - name: ACL_SIMPLE_TEST
